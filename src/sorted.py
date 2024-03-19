@@ -1,3 +1,6 @@
+from colorama import *
+
+
 def filter_vacancies(vacancies_list, filter_words):
     """
     Функция для фильтрации вакансий
@@ -8,13 +11,14 @@ def filter_vacancies(vacancies_list, filter_words):
     filtered_vacancies = []
     for vacancy in vacancies_list:
         for word in filter_words:
-            if word in str(vacancy):
+            if (word in vacancy.name or vacancy.area or vacancy.requirement or vacancy.responsibility or vacancy.employer
+                    or vacancy.experience):
                 filtered_vacancies.append(vacancy)
                 break
     if len(filtered_vacancies) != 0:
         return filtered_vacancies
     else:
-        return f'Вакансии не найдены'
+        return f'{Fore.RED}Вакансии не найдены{Fore.RESET}'
 
 
 def get_vacancies_by_salary(filtered_vacancies, salary_range):
@@ -25,11 +29,9 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
     :return:
     """
     ranged_vacancies = []
-    if salary_range == "":
-        salary_range = f"Зарплата не указана"
-        for vacancy in filtered_vacancies:
-            if salary_range <= vacancy.salary <= salary_range:
-                ranged_vacancies.append(vacancy)
+    for vacancy in filtered_vacancies:
+        if vacancy.salary == salary_range:
+            ranged_vacancies.append(vacancy)
 
         return ranged_vacancies
 
@@ -41,14 +43,6 @@ def get_top_vacancies(sorted_vacancies, top_n):
     :param top_n: количество топовых вакансий
     :return:
     """
-    if top_n == "":
-        top_n = 10
-        top_vacancies = sorted_vacancies[:top_n]
-        return top_vacancies
-    elif top_n != int:
-        return f'Введите число'
-    else:
-        if int(top_n) > len(sorted_vacancies):
-            top_n = len(sorted_vacancies)
-            top_vacancies = sorted_vacancies[:top_n]
-            return top_vacancies
+    top_vacancies = sorted_vacancies[:top_n]
+    return top_vacancies
+

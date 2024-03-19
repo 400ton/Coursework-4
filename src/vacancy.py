@@ -23,17 +23,15 @@ class Vacancy:
     def check_salary(value):
         if isinstance(value, dict):
             if value['from'] is None:
-                return f'{value['to']} {value['currency']}'
+                return f'{value['to']}'  # {value['currency']}'
 
             elif value['to'] is None:
-                return f'{value['from']} {value['currency']}'
+                return f'{value['from']}'  # {value['currency']}
             else:
-                return f'{value['from']} - {value['to']} {value['currency']}'
+                return f'{value['from']} - {value['to']}'  # {value['currency']}'
 
         else:
             return f"Зарплата не указана"
-
-
 
     def __lt__(self, other):
         if self.salary < other.salary:
@@ -82,5 +80,5 @@ class Vacancy:
         :return:
         """
         return (
-            f'Имя класса: {self.__class__.__name__}. Атрибуты класса: ({self.name}, {self.area}, {self.requirement},'
-            f'{self.responsibility}, {self.salary}, {self.experience}, {self._url})')
+            f'Имя класса: {self.__class__.__name__}. Атрибуты класса: ({self.name}, {self.area}, {self.requirement}, '
+            f'{self.responsibility}, {self.salary}, {self.experience}, {self._url})\n')
