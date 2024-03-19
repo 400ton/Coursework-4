@@ -50,10 +50,10 @@ def test_get_top_vacancies():
 
 
 def test_get_vacancies_by_salary():
-    salary_range = ""
+    salary_range = "Зарплата не указана"
     ranged_vacancies = get_vacancies_by_salary(filtered_vacancy, salary_range)
-    assert ranged_vacancies == filtered_vacancy[0:2]
+    assert ranged_vacancies == filtered_vacancy[0:1]
 
     salary_range = "50000 USD"
     ranged_vacancies = get_vacancies_by_salary(filtered_vacancy, salary_range)
-    assert ranged_vacancies is None
+    assert ranged_vacancies == []
