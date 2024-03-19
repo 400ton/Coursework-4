@@ -34,12 +34,12 @@ class Vacancy:
             return f"Зарплата не указана"
 
     def __lt__(self, other):
-        if self.salary < other.salary:
+        if self.salary < other:
             return True
         return False
 
     def __eq__(self, other):
-        if self.salary == other.salary:
+        if self.salary == other:
             return True
         return False
 
