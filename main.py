@@ -14,7 +14,7 @@ def user_interaction():
     top_n = int(input("Введите количество вакансий для вывода в топ N: "))
     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").capitalize().split()
     salary_range = input("Введите диапазон зарплат, пример: 100000 - 150000 RUR (USD, EUR, KZT), "
-                         "по умолчанию поиск без указания зарплаты: \n")
+                         "по умолчанию поиск без указания зарплаты: \n").upper()
 
     # Получение вакансий с hh.ru в формате JSON по запросу
     hh_vacancies = hh_api.get_vacancies(search_query)

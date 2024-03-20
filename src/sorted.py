@@ -19,7 +19,7 @@ def filter_vacancies(vacancies_list, filter_words):
     if len(filtered_vacancies) != 0 or filtered_vacancies is None:
         return filtered_vacancies
     else:
-        return f'{Fore.RED}Вакансии не найдены{Fore.RESET}'
+        return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
 
 
 def get_vacancies_by_salary(filtered_vacancies, salary_range):
@@ -38,7 +38,7 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
             ranged_vacancies.append(vacancy)
 
     if len(ranged_vacancies) == 0 or ranged_vacancies is None:
-        return f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}'
+        return [f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}']
     return ranged_vacancies
 
 

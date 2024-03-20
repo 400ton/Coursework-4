@@ -39,10 +39,10 @@ def test_filter_vacancies():
     assert filtered_vacancies == filtered_vacancy[0:2]
 
     filtered_vacancies = filter_vacancies(filtered_vacancy, [])
-    assert filtered_vacancies == f'{Fore.RED}Вакансии не найдены{Fore.RESET}'
+    assert filtered_vacancies == [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
 
     filtered_vacancies = filter_vacancies(filtered_vacancy, ['Несуществующее слово'])
-    assert filtered_vacancies == f'{Fore.RED}Вакансии не найдены{Fore.RESET}'
+    assert filtered_vacancies == [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
 
 
 def test_get_top_vacancies():
@@ -63,8 +63,8 @@ def test_get_vacancies_by_salary():
 
     salary_range = "50000 USD"
     ranged_vacancies = get_vacancies_by_salary(filtered_vacancy, salary_range)
-    assert ranged_vacancies == (f'{Fore.RED}Вакансии не найдены. '
-                                f'Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}')
+    assert ranged_vacancies == [(f'{Fore.RED}Вакансии не найдены. '
+                                f'Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}')]
 
     salary_range = "40000 USD"
     ranged_vacancies = get_vacancies_by_salary(filtered_vacancy, salary_range)
