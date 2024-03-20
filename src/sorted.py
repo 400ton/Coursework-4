@@ -9,13 +9,14 @@ def filter_vacancies(vacancies_list, filter_words):
     :return:
     """
     filtered_vacancies = []
+
     for vacancy in vacancies_list:
         for word in filter_words:
-            if (word in vacancy.name or vacancy.area or vacancy.requirement or vacancy.responsibility or vacancy.employer
-                    or vacancy.experience):
+            if (word in vacancy.name or word in vacancy.area or word in vacancy.experience or word in vacancy.employer
+                    or word in vacancy.requirement or word in vacancy.responsibility):
                 filtered_vacancies.append(vacancy)
-                break
-    if len(filtered_vacancies) != 0:
+
+    if len(filtered_vacancies) != 0 or filtered_vacancies is None:
         return filtered_vacancies
     else:
         return f'{Fore.RED}Вакансии не найдены{Fore.RESET}'
@@ -28,12 +29,17 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
     :param salary_range: диапазон зарплаты
     :return:
     """
+    if not salary_range:
+        salary_range = "Зарплата не указана"
+
     ranged_vacancies = []
     for vacancy in filtered_vacancies:
         if vacancy.salary == salary_range:
             ranged_vacancies.append(vacancy)
 
-        return ranged_vacancies
+    if len(ranged_vacancies) == 0 or ranged_vacancies is None:
+        return f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}'
+    return ranged_vacancies
 
 
 def get_top_vacancies(sorted_vacancies, top_n):
@@ -43,6 +49,9 @@ def get_top_vacancies(sorted_vacancies, top_n):
     :param top_n: количество топовых вакансий
     :return:
     """
+    if len(sorted_vacancies) < top_n:
+        top_n = len(sorted_vacancies)
+
     top_vacancies = sorted_vacancies[:top_n]
     return top_vacancies
 
