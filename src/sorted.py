@@ -10,6 +10,9 @@ def filter_vacancies(vacancies_list, filter_words):
     """
     filtered_vacancies = []
 
+    if not filter_words:
+        return vacancies_list
+
     for vacancy in vacancies_list:
         for word in filter_words:
             if (word in vacancy.name or word in vacancy.area or word in vacancy.experience or word in vacancy.employer
@@ -38,7 +41,8 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
             ranged_vacancies.append(vacancy)
 
     if len(ranged_vacancies) == 0 or ranged_vacancies is None:
-        return [f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}']
+        return [
+            f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}']
     return ranged_vacancies
 
 
@@ -54,4 +58,3 @@ def get_top_vacancies(sorted_vacancies, top_n):
 
     top_vacancies = sorted_vacancies[:top_n]
     return top_vacancies
-

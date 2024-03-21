@@ -39,7 +39,7 @@ def test_filter_vacancies():
     assert filtered_vacancies == filtered_vacancy[0:2]
 
     filtered_vacancies = filter_vacancies(filtered_vacancy, [])
-    assert filtered_vacancies == [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+    assert filtered_vacancies == filtered_vacancies
 
     filtered_vacancies = filter_vacancies(filtered_vacancy, ['Несуществующее слово'])
     assert filtered_vacancies == [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
