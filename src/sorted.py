@@ -110,8 +110,6 @@ def get_vacancies_by_salary(filtered_vacancies, check_salary):
     try:
         # Поиск зарплаты в списке отфильтрованых вакансий
         ranged_vacancies = []
-        print(from_check, to_check, currency_check)
-
         if from_check is not None or to_check is not None:
             for vacancy in filtered_vacancies:
                 if from_check <= vacancy.salary <= to_check:
