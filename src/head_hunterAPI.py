@@ -20,7 +20,7 @@ class HeadHunterAPI(AbstractAPI):
         :return: json object
         """
         if search_query == '' or search_query == int:
-            raise ValueError("Ввод не может быть пустым или быть числом")
+            return f"Ввод не может быть пустым или быть числом"
         else:
             params = {"per_page": 100, "text": search_query, "page": 10}
             response = requests.get(self.__base_url, params=params)

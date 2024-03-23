@@ -6,12 +6,13 @@ class Vacancy:
     Класс для работы с вакансиями
     """
 
-    def __init__(self, name, area, requirement, responsibility, salary, experience, employer, url):
+    def __init__(self, name, area, requirement, responsibility, salary, currency, experience, employer, url):
         self.name = name
         self.area = area
         self.requirement = self.check(requirement)
         self.responsibility = self.check(responsibility)
         self.salary = self.check_salary(salary)
+        self.currency = currency
         self.experience = experience
         self.employer = employer
         self._url = url
@@ -37,19 +38,18 @@ class Vacancy:
         """
         if isinstance(value, dict):
             if value['from'] is None:
-                return f'{value['to']} {value['currency']}'
+                return int(value['to'])
 
             elif value['to'] is None:
-                return f'{value['from']} {value['currency']}'
+                return int(value['from'])
             else:
-                return f'{value['from']} - {value['to']} {value['currency']}'
-
+                return (int(value['from']) + int(value['to'])) / 2
         else:
-            return f"Зарплата не указана"
+            return 0
 
     def __lt__(self, other):
         """
-        Функция для сортировки вакансий по зарплате
+        Функция для сравнений вакансий по зарплате
         :param other:
         :return: bool
         """
@@ -67,6 +67,16 @@ class Vacancy:
             return True
         return False
 
+    def __le__(self, other):
+        """
+        ��ункция для сравнений вакансий по зарплате
+        :param other:
+        :return: bool
+        """
+        if self.salary <= other:
+            return True
+        return False
+
     @classmethod
     def from_dict(cls, data: list):
         """
@@ -74,20 +84,30 @@ class Vacancy:
         :param data:
         :return: обьекты класса
         """
-        vacancies_list = []
-        for value in data:
-            vacancies_list.append(cls(name=value['name'],
-                                      area=value['area']['name'],
-                                      requirement=value['snippet']['requirement'],
-                                      responsibility=value['snippet']['responsibility'],
-                                      salary=value['salary'],
-                                      experience=value['experience']['name'],
-                                      employer=value['employer']['name'],
-                                      url=value['alternate_url']))
+        if isinstance(data, list):
 
-        if len(vacancies_list) == 0 or vacancies_list is None:
-            raise ValueError("Список не может быть пустым")
-        return vacancies_list
+            vacancies_list = []
+            for value in data:
+                if value['salary'] is None:
+                    currency = ''
+                else:
+                    currency = value['salary']['currency']
+
+                vacancies_list.append(cls(name=value['name'],
+                                          area=value['area']['name'],
+                                          requirement=value['snippet']['requirement'],
+                                          responsibility=value['snippet']['responsibility'],
+                                          salary=value['salary'],
+                                          currency=currency,
+                                          experience=value['experience']['name'],
+                                          employer=value['employer']['name'],
+                                          url=value['alternate_url']))
+
+            if len(vacancies_list) == 0 or vacancies_list is None:
+                return f"Список не может быть пустым"
+            return vacancies_list
+        else:
+            return f"Неверный формат данных"
 
     def __str__(self):
         """
@@ -98,7 +118,7 @@ class Vacancy:
                 f'Город: {Fore.CYAN}{self.area}{Fore.RESET}\n'
                 f'Требования: {Fore.CYAN}{self.requirement}{Fore.RESET}\n'
                 f'Обязанности: {Fore.CYAN}{self.responsibility}{Fore.RESET}\n'
-                f'Зарплата: {Fore.CYAN}{self.salary}{Fore.RESET}\n'
+                f'Зарплата: {Fore.CYAN}{self.salary} {self.currency}{Fore.RESET}\n'
                 f'Опыт работы: {Fore.CYAN}{self.experience}{Fore.RESET}\n'
                 f'Организация: {Fore.CYAN}{self.employer}{Fore.RESET}\n'
                 f'Ссылка: {self._url}\n')
