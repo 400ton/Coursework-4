@@ -8,21 +8,18 @@ def filter_vacancies(vacancies_list, filter_words):
     :param filter_words: ключ по которому идет фильтрация
     :return:
     """
-    filtered_vacancies = []
     if isinstance(vacancies_list, list):
         if not filter_words:
             return vacancies_list
 
+        filtered_vacancies = []
         for vacancy in vacancies_list:
             for word in filter_words:
                 if (word in vacancy.name or word in vacancy.area or word in vacancy.experience
                         or word in vacancy.employer or word in vacancy.requirement or word in vacancy.responsibility):
                     filtered_vacancies.append(vacancy)
 
-        if len(filtered_vacancies) != 0 or filtered_vacancies is not None:
-            return filtered_vacancies
-        else:
-            return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+        return filtered_vacancies
     else:
         return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
 
@@ -38,12 +35,11 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
         if not salary_range:
             return filtered_vacancies
         else:
-            from_salary, to_salary, currency = salary_range.split(' ')
-            print(from_salary, to_salary, currency)
+            from_salary, to_salary, currency = salary_range.split(',')
 
             ranged_vacancies = []
             for vacancy in filtered_vacancies:
-                if int(from_salary) <= vacancy.salary <= int(to_salary):
+                if int(from_salary) <= vacancy.salary <= int(to_salary) and vacancy.currency == currency:
                     ranged_vacancies.append(vacancy)
             return ranged_vacancies
 
@@ -72,4 +68,4 @@ def get_top_vacancies(sorted_vacancies, top_n):
         return top_vacancies
 
     except ValueError:
-        return [f'{Fore.RED}Ошибка ввода топа N{Fore.RESET}']
+        return [f'{Fore.RED}Ошибка ввода топа N. Введите число{Fore.RESET}']
