@@ -2,10 +2,14 @@ from src.classes.head_hunterAPI import HeadHunterAPI
 from src.classes.vacancy import Vacancy
 from src.classes.json_manager import JSONManager
 from src.filter_func import filter_vacancies, get_vacancies_by_salary, get_top_vacancies
+from colorama import *
 
 
 # Функция для взаимодействия с пользователем
 def user_interaction():
+    print(Fore.YELLOW + Style.BRIGHT + 'Привет. Помогу найти работу на сайте hh.ru. '
+                                       'Введи данные для поиска вакансий' + Fore.RESET)
+
     # Получаем данные от пользователя
     search_query = input("Введите поисковый запрос: ").lower()
     top_n = input("Введите количество вакансий для вывода в топ N: ")
