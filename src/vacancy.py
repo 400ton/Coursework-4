@@ -114,6 +114,8 @@ class Vacancy:
         Строковое отображение атрибутов класса для пользователя
         :return:
         """
+        if self.salary == 0:
+            self.salary = f"Зарплата не указана"
         return (f'Название вакансии: {Fore.CYAN}{self.name}{Fore.RESET}\n'
                 f'Город: {Fore.CYAN}{self.area}{Fore.RESET}\n'
                 f'Требования: {Fore.CYAN}{self.requirement}{Fore.RESET}\n'

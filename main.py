@@ -1,7 +1,7 @@
 from src.head_hunterAPI import HeadHunterAPI
 from src.vacancy import Vacancy
 from src.json_saving import JSONManager
-from src.sorted import filter_vacancies, get_vacancies_by_salary, get_top_vacancies, check_input_salary
+from src.sorted import filter_vacancies, get_vacancies_by_salary, get_top_vacancies
 
 
 # Функция для взаимодействия с пользователем
@@ -11,7 +11,7 @@ def user_interaction():
     top_n = input("Введите количество вакансий для вывода в топ N: ")
     filter_words = input("Введите ключевые слова для фильтрации вакансий: ").capitalize().split()
     salary_range = input("Введите диапазон зарплат, пример: 100000 - 150000 "
-                         "по умолчанию поиск без указания зарплаты: \n").upper().split(' ')
+                         "по умолчанию поиск без указания зарплаты: \n").upper()
 
     # Создание экземпляра класса для работы с API сайтов с вакансиями
     hh_api = HeadHunterAPI()
@@ -29,12 +29,10 @@ def user_interaction():
     # Преобразование набора данных из JSON в список объектов
     vacancies_list = Vacancy.from_dict(data)
 
-    # Проверка диапазона зарплат
-    check_salary = check_input_salary(salary_range)
-
     # Фильтрация вакансий
     filtered_vacancies = filter_vacancies(vacancies_list, filter_words)  # Фильтация по ключам
-    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, check_salary)  # Фильтрация по диапазону зарплат
+
+    ranged_vacancies = get_vacancies_by_salary(filtered_vacancies, salary_range)  # Фильтрация по диапазону зарплат
     top_vacancies = get_top_vacancies(ranged_vacancies, top_n)  # Фильтрация по колличеству вакансий
 
     # Вывод вакансий в топ N

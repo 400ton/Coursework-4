@@ -27,109 +27,28 @@ def filter_vacancies(vacancies_list, filter_words):
         return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
 
 
-def check_input_salary(words):
-    """
-    Функция проверки входных данных с зарплаты
-    :param words:
-    :return: В зависимости от длины списка:
-     dict с ключами "from", "to", "currency",
-     dict с ключами "from", "to",
-     dict с ключом "from"
-    """
-    # Удаление дефиса
-    for i in range(len(words)):
-        if words[i] == '-':
-            words[i] = ''
-
-    # Удаление пустых элементов
-    words = [word for word in words if word != '']
-
-    # Проверка длины списка
-    if len(words) == 0:
-        return f"Зарплата не указана"
-
-    elif len(words) == 3:
-
-        # Добавление ключей 'from', 'to', 'currency'
-        words.insert(0, 'from')
-        words.insert(2, 'to')
-        words.insert(4, 'currency')
-
-        # Преобразование в словарь
-        dict_values = dict(zip(words[::2], words[1::2]))
-        return dict_values
-
-    elif len(words) == 2:
-        # Добавление ключей 'from', 'to'
-        for word in words:
-            if word in 'RUR' or word in 'USD' or word in 'EUR' or word in 'KZT':
-                words.insert(0, 'from')
-                words.insert(2, 'currency')
-                dict_values = dict(zip(words[::2], words[1::2]))
-                return dict_values
-
-        words.insert(0, 'from')
-        words.insert(2, 'to')
-
-        dict_values = dict(zip(words[::2], words[1::2]))
-        return dict_values
-
-    elif len(words) == 1:
-        # Добавление ключa 'from'
-        words.insert(0, 'from')
-        dict_values = dict(zip(words[0::2], words[1::2]))
-        return dict_values
-    else:
-        raise ValueError('Ошибка ввода')
-
-
-def get_vacancies_by_salary(filtered_vacancies, check_salary):
+def get_vacancies_by_salary(filtered_vacancies, salary_range):
     """
     Функция для получения вакансий по зарплате
     :param filtered_vacancies: список вакансий
-    :param check_salary: диапазон зарплаты
+    :param salary_range: диапазон зарплаты
     :return:
     """
-    from_check = 0
-    to_check = 0
-    currency_check = 'RUR'
-
     try:
-        if isinstance(check_salary, dict):
-            if check_salary.get('from') or check_salary.get('to') or check_salary.get('currency'):
-                from_check = int(check_salary.get('from'))
-                to_check = int(check_salary.get('to'))
-                currency_check = check_salary.get('currency')
+        if not salary_range:
+            return filtered_vacancies
+        else:
+            from_salary, to_salary, currency = salary_range.split(' ')
+            print(from_salary, to_salary, currency)
 
-                if currency_check is None:
-                    currency_check = 'RUR'
-
-    except TypeError:
-        return [f'{Fore.RED}Ошибка ввода диапазона{Fore.RESET}']
-
-    try:
-        # Поиск зарплаты в списке отфильтрованых вакансий
-        ranged_vacancies = []
-        if from_check is not None or to_check is not None:
+            ranged_vacancies = []
             for vacancy in filtered_vacancies:
-                if from_check <= vacancy.salary <= to_check:
-                    print(from_check, vacancy.salary, to_check)
+                if int(from_salary) <= vacancy.salary <= int(to_salary):
                     ranged_vacancies.append(vacancy)
+            return ranged_vacancies
 
-        elif to_check is None:
-            for vacancy in filtered_vacancies:
-                if vacancy.salary == from_check:
-                    ranged_vacancies.append(vacancy)
-
-            # Проверка возвращаемого функцией списка
-        if not ranged_vacancies:
-            return [
-                f'{Fore.RED}Вакансии не найдены. Попробуйте изменить диапазон или дописать (RUR, USD, EUR, KZT){Fore.RESET}']
-
-        return ranged_vacancies
-
-    except AttributeError:
-        return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+    except ValueError:
+        return [f'{Fore.RED}Измените формат ввода диапазона зарплат{Fore.RESET}']
 
 
 def get_top_vacancies(sorted_vacancies, top_n):
@@ -151,5 +70,6 @@ def get_top_vacancies(sorted_vacancies, top_n):
 
         top_vacancies = sorted_vacancies[:top_n]
         return top_vacancies
+
     except ValueError:
         return [f'{Fore.RED}Ошибка ввода топа N{Fore.RESET}']
