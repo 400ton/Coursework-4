@@ -69,7 +69,7 @@ class Vacancy:
 
     def __le__(self, other):
         """
-        ��ункция для сравнений вакансий по зарплате
+        Функция для сравнений вакансий по зарплате
         :param other:
         :return: bool
         """
@@ -104,7 +104,8 @@ class Vacancy:
                                           url=value['alternate_url']))
 
             if len(vacancies_list) == 0 or vacancies_list is None:
-                return f"Список не может быть пустым"
+                return f"Неверный формат данных"
+
             return vacancies_list
         else:
             return f"Неверный формат данных"

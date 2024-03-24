@@ -16343,7 +16343,7 @@ nohup.out
 
 !/main.py
 !/.gitignore
-!/src/template.py
+!/src/classes/template.py
 !/src
 !/data
 !/test/

@@ -1,6 +1,6 @@
 import os
 import json
-from src.template import AbstractFileManager
+from src.classes.template import AbstractFileManager
 
 
 class JSONManager(AbstractFileManager):

@@ -1,5 +1,5 @@
 import requests
-from src.template import AbstractAPI
+from src.classes.template import AbstractAPI
 
 
 class HeadHunterAPI(AbstractAPI):

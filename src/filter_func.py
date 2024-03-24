@@ -8,20 +8,28 @@ def filter_vacancies(vacancies_list, filter_words):
     :param filter_words: ключ по которому идет фильтрация
     :return:
     """
-    if isinstance(vacancies_list, list):
-        if not filter_words:
-            return vacancies_list
-
-        filtered_vacancies = []
-        for vacancy in vacancies_list:
-            for word in filter_words:
-                if (word in vacancy.name or word in vacancy.area or word in vacancy.experience
-                        or word in vacancy.employer or word in vacancy.requirement or word in vacancy.responsibility):
-                    filtered_vacancies.append(vacancy)
-
-        return filtered_vacancies
-    else:
+    if not isinstance(vacancies_list, list):
         return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+
+    elif not filter_words:
+        return vacancies_list
+
+    filtered_vacancies = []
+    for vacancy in vacancies_list:
+        count = 0  # Счетчик итерраций для исключения повторений вакансий в полученном списке
+
+        for word in filter_words:
+            if (word in vacancy.name or word in vacancy.area or word in vacancy.experience
+                    or word in vacancy.employer or word in vacancy.requirement or word in vacancy.responsibility):
+                count += 1
+                if count > 1:
+                    continue
+                filtered_vacancies.append(vacancy)
+
+    if len(filtered_vacancies) == 0 or filtered_vacancies is None:
+        return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+    else:
+        return filtered_vacancies
 
 
 def get_vacancies_by_salary(filtered_vacancies, salary_range):
@@ -31,18 +39,24 @@ def get_vacancies_by_salary(filtered_vacancies, salary_range):
     :param salary_range: диапазон зарплаты
     :return:
     """
+    if isinstance(filtered_vacancies, (int, str)):
+        return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
+
     try:
         if not salary_range:
             return filtered_vacancies
         else:
-            from_salary, to_salary, currency = salary_range.split(',')
+            try:
+                from_salary, to_salary, currency = salary_range.split(',')
 
-            ranged_vacancies = []
-            for vacancy in filtered_vacancies:
-                if int(from_salary) <= vacancy.salary <= int(to_salary) and vacancy.currency == currency:
-                    ranged_vacancies.append(vacancy)
-            return ranged_vacancies
+                ranged_vacancies = []
+                for vacancy in filtered_vacancies:
+                    if int(from_salary) <= int(vacancy.salary) <= int(to_salary) and vacancy.currency == currency:
+                        ranged_vacancies.append(vacancy)
+                return ranged_vacancies
 
+            except AttributeError:
+                return [f'{Fore.RED}Вакансии не найдены{Fore.RESET}']
     except ValueError:
         return [f'{Fore.RED}Измените формат ввода диапазона зарплат{Fore.RESET}']
 
